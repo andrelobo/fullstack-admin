@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, useTheme } from "@mui/material";
-import { useGetUserPerformanceQuery } from "state/api";
-import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
+import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
-import CustomColumnMenu from "components/DataGridCustomColumnMenu";
+import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 
-const Performance = () => {
+const Transactions = () => {
   const theme = useTheme();
-  const userId = useSelector((state) => state.global.userId);
-  const { data, isLoading } = useGetUserPerformanceQuery(userId);
+
+  // values to be sent to the backend
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [sort, setSort] = useState({});
+  const [search, setSearch] = useState("");
+
+  const [searchInput, setSearchInput] = useState("");
+  const { data, isLoading } = useGetTransactionsQuery({
+    page,
+    pageSize,
+    sort: JSON.stringify(sort),
+    search,
+  });
 
   const columns = [
     {
@@ -44,13 +55,9 @@ const Performance = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header
-        title="PERFORMANCE"
-        subtitle="Track your Affiliate Sales Performance Here"
-      />
+      <Header title="TRANSACTIONS" subtitle="Entire list of transactions" />
       <Box
-        mt="40px"
-        height="75vh"
+        height="80vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -79,10 +86,21 @@ const Performance = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row._id}
-          rows={(data && data.sales) || []}
+          rows={(data && data.transactions) || []}
           columns={columns}
-          components={{
-            ColumnMenu: CustomColumnMenu,
+          rowCount={(data && data.total) || 0}
+          rowsPerPageOptions={[20, 50, 100]}
+          pagination
+          page={page}
+          pageSize={pageSize}
+          paginationMode="server"
+          sortingMode="server"
+          onPageChange={(newPage) => setPage(newPage)}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          onSortModelChange={(newSortModel) => setSort(...newSortModel)}
+          components={{ Toolbar: DataGridCustomToolbar }}
+          componentsProps={{
+            toolbar: { searchInput, setSearchInput, setSearch },
           }}
         />
       </Box>
@@ -90,4 +108,4 @@ const Performance = () => {
   );
 };
 
-export default Performance;
+export default Transactions;

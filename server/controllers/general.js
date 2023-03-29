@@ -12,6 +12,19 @@ export const getUser = async (req, res) => {
   }
 };
 
+
+
+export const listUsers = async (req, res) => {
+  try {
+    
+    const user = await User.find();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
 export const getDashboardStats = async (req, res) => {
   try {
     // hardcoded values

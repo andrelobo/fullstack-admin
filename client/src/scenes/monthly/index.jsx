@@ -40,7 +40,7 @@ const Monthly = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="MONTHLY SALES" subtitle="Chart of monthlysales" />
+      <Header title="Vendas Mensais" subtitle="Chart of monthlysales" />
       <Box height="75vh">
         {data ? (
           <ResponsiveLine

@@ -74,7 +74,7 @@ const Product = ({
           <Typography>id: {_id}</Typography>
           <Typography>Supply Left: {supply}</Typography>
           <Typography>
-            Yearly Sales This Year: {stat.yearlySalesTotal}
+            Vendas Anuais This Year: {stat.yearlySalesTotal}
           </Typography>
           <Typography>
             Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}
@@ -91,7 +91,7 @@ const Products = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="PRODUCTS" subtitle="See your list of products." />
+      <Header title="PRODUTOS" subtitle="Nossa lista de produtos." />
       {data || !isLoading ? (
         <Box
           mt="20px"
